@@ -1,0 +1,93 @@
+#!/bin/bash
+
+############################################################
+# Script:     chmod_calculator.sh
+# Purpose:    Interactive chmod permission calculator with menu
+# Author:     Matthew Lubker
+# Created:    July 10, 2025
+# Updated:    July 10, 2025
+# License:    MIT
+############################################################
+
+# === Chmod Calculator  ====|
+calc_permission() {
+    local entity=$1
+    local total=0
+    local perms=""
+
+    echo "Set permissions for $entity:"
+    read -p "  Read (r)? [y/n]: " r
+    read -p "  Write (w)? [y/n]: " w
+    read -p "  Execute (x)? [y/n]: " x
+
+    if [[ $r == [yY] ]]; then
+        total=$((total + 4))
+        perms+="r"
+    else
+        perms+="-"
+    fi
+
+    if [[ $w == [yY] ]]; then
+        total=$((total + 2))
+        perms+="w"
+    else
+        perms+="-"
+    fi
+
+    if [[ $x == [yY] ]]; then
+        total=$((total + 1))
+        perms+="x"
+    else
+        perms+="-"
+    fi
+
+    echo "$total $perms"
+}
+
+while true; do
+    clear
+    echo "=============================="
+    echo "     CHMOD CALCULATOR"
+    echo "=============================="
+    echo "1) Calculate chmod permission"
+    echo "2) Help"
+    echo "3) Exit"
+    echo "------------------------------"
+    read -p "Choose an option [1-3]: " choice
+
+    case $choice in
+        1)
+            echo ""
+            u=($(calc_permission "User"))
+            g=($(calc_permission "Group"))
+            o=($(calc_permission "Others"))
+            chmod_val="${u[0]}${g[0]}${o[0]}"
+            symbolic="${u[1]}${g[1]}${o[1]}"
+            echo ""
+            echo "Result:"
+            echo "  Numeric  : $chmod_val"
+            echo "  Symbolic : $symbolic"
+            echo "  Example  : chmod $chmod_val filename"
+            echo ""
+            read -p "Press Enter to return to menu..." pause
+            ;;
+        2)
+            echo ""
+            echo "Help:"
+            echo "- This tool helps you calculate file permissions in Linux."
+            echo "- You'll be asked if User, Group, and Others should have"
+            echo "  read, write, or execute permissions."
+            echo "- The tool shows the numeric and symbolic chmod values."
+            echo ""
+            read -p "Press Enter to return to menu..." pause
+            ;;
+        3)
+            echo "Goodbye!"
+            exit 0
+            ;;
+        *)
+            echo "Invalid option. Try again."
+            sleep 1
+            ;;
+    esac
+done
