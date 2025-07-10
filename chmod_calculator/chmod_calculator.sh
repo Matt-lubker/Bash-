@@ -2,7 +2,7 @@
 
 ############################################################
 # Script:     chmod_calculator.sh
-# Purpose:    Interactive chmod permission calculator with menu
+# Purpose:    Interactive chmod permission calculator 
 # Author:     Matthew Lubker
 # Created:    July 10, 2025
 # Updated:    July 10, 2025
